@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Image from 'next/image'
 import Button from 'components/buttons/Button'
 
 const ContainerDiv = styled.div`
@@ -51,10 +50,10 @@ export default function Content() {
           <p>Empieza ahorrar desde tu casa</p>
           <h1>¡Ahorra tu dinero!</h1>
           <h2>Abre ya tu cuenta de ahorros/corriente</h2>
-          <Button>Empieza aquí</Button>
+          <Button route="/personas/login" >Empieza aquí</Button>
         </section>
         <div className='image'>
-          <img src='/cerdito2.jpg' />
+          <img src='/cerdito2.jpg' alt='image'/>
         </div>
       </ContainerDiv>
     </>
