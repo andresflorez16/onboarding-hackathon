@@ -12,30 +12,49 @@ width: 100%;
 height: 10%;
 box-shadow: 0 3px 3px #333;
 padding: 10px 20px;
+@media (max-width: 560px) {
+  height: 18%;
+}
 header {
   display: flex;
   width: 100%;
   height: 100%;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 560px) {
+    flex-wrap: wrap;
+    .logo {
+      margin: 0 auto;
+      height: 50%;
+    }
+  }
 }
 .buttons {
   display: flex;
-  width: 25%;
+  width: 30%;
   height: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  @media (max-width: 1450px) {
-    width: 30%;
-  }
   @media (max-width: 1200px) {
-    width: 35%;
-  }
-  @media (max-width: 1050px) {
-    width: 40%;
-  }
-  @media (max-width: 920px) {
     width: 50%;
+  }
+  @media (max-width: 750px) {
+    width: 80%;
+  }
+  @media (max-width: 560px) {
+    width: 100%;
+    text-align: items;
+    height: 50%;
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 350px) {
+    margin-top: 5px;
+    p {
+      font-size: 10px;
+    }
   }
 }
 `
@@ -44,11 +63,13 @@ export default function Header() {
   return(
     <HeaderContainer>
       <header>
-        <Link href='/' passHref>
-          <a>
-            <Image style={{ cursor: 'pointer' }} src={'/bbva.png'} width={133} height={40}/>
-          </a>
-        </Link>
+        <div className='logo'>
+          <Link href='/' passHref>
+            <a>
+              <Image style={{ cursor: 'pointer' }} src={'/bbva.png'} width={133} height={40}/>
+            </a>
+          </Link>
+        </div>
         <div className='buttons'>
           <ButtonSignin />
           <Button route="/personas/login" >Inicia sesión</Button>

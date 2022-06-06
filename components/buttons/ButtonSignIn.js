@@ -19,6 +19,7 @@ height: 2.1em;
 padding-left: 2.8em;
 padding-right: 0.9em;
 cursor: pointer;
+margin-right: 10px;
 
 .icon {
  background: #fff;

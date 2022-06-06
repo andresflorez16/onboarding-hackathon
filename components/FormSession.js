@@ -20,12 +20,23 @@ height: 80%;
 display: flex;
 justify-content: center;
 align-items: center;
+@media (max-width: 1000px) {
+  width: 90%;
+}
+@media (max-width: 880px) {
+  .input {
+    width: 90%;
+  }
+}
 .spanMethod {
   strong {
     cursor: pointer;
     text-decoration: underline;
   }
   margin-top: 10px;
+  @media (max-width: 400px) {
+    font-size: .9em;
+  }
 }
 form {
   width: 100%;
@@ -40,14 +51,26 @@ div {
    font-size: 1.5em;
    padding: 10px 10px 10px 5px;
    display: inline-block;
-   width: 50%;
+   width: 70%;
    border: none;
    border-bottom: 1px solid #515151;
    background: transparent;
    font-family: Helvetica;
    margin-top: 20px;
+  @media (max-width: 880px) {
+    width: 80%;
   }
-
+  @media (max-width: 590px) {
+    font-size: 1.3em;
+  }
+  @media (max-width: 590px) {
+    width: 90%;
+    font-size: 1.2em;
+  }
+  @media (max-width: 400px) {
+    font-size: 1em;
+  }
+  }
   .input:focus {
    outline: none;
   }
@@ -68,6 +91,9 @@ div {
    top: -20px;
    font-size: 2em;
    color: #5264AE;
+  @media (max-width: 370px) {
+    font-size: 1.5em;
+  }
   }
 
   .bar {

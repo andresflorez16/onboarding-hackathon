@@ -6,9 +6,14 @@ const SessionDiv = styled.div`
 display: grid;
 place-items: center;
 width: 80%;
-height: 60%;
+height: 70%;
 background-color: #fff;
 border-radius: 20px;
+@media (max-width: 880px) {
+  margin-top: 100px;
+  width: 90%;
+  height: 75%;
+}
 `
 
 export default function MethodSession() {

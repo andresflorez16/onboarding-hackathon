@@ -7,10 +7,19 @@ height: 70%;
 display: flex;
 justify-content: center;
 align-items: center;
-//background-color: #004481;
 background-color: #fff9;
 border-radius: 20px;
+@media (max-width: 950px) {
+  flex-wrap: wrap;
+}
+@media (max-width: 560px) {
+  flex-wrap: wrap;
+  height: 50%;
+}
 section {
+@media (max-width: 950px) {
+  width: 100%;
+}
   width: 40%;
   padding: 15px;
   h2 {
@@ -21,23 +30,37 @@ section {
   }
   h1 {
     text-shadow: 1px 1px 1px #000;
-    font-size: 3em;
+    font-size: 3rem;
     color: #fcdb03;
   }
-  p {
+  span {
     color: #333;
   }
   margin: 10px;
+  @media (max-width: 1200px) {
+    h1 {
+      font-size: 2.3rem;
+    }
+  }
+  @media (max-width: 950px) {
+    h1 {
+      font-size: 2rem;
+    }
+  }
 }
 .image {
   width: 60%;
   height: 100%;
+  @media (max-width: 950px) {
+    width: 100%;
+    height: 60%;
+    position: relative;
+  }
   img {
     object-fit: cover;
     border-radius: 20px;
     width:100%;
-    height:100%;
-  }
+    height: 100%;
 }
 `
 
@@ -47,7 +70,7 @@ export default function Content() {
     <>
       <ContainerDiv>
         <section>
-          <p>Empieza ahorrar desde tu casa</p>
+          <span>Empieza ahorrar desde tu casa</span>
           <h1>¡Ahorra tu dinero!</h1>
           <h2>Abre ya tu cuenta de ahorros/corriente</h2>
           <Button route="/personas/login" >Empieza aquí</Button>
