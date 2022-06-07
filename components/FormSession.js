@@ -4,6 +4,7 @@ import ButtonSessions from 'components/buttons/ButtonMethods'
 import Link from 'next/link'
 import Methods from 'components/MethodsPopups'
 import { useState, useEffect } from 'react'
+import { loginEmailPassword, addUser } from 'firebase/cliente'
 
 const inputHighlighter = keyframes`
 from {
@@ -158,7 +159,7 @@ export default function FormSession(props) {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.target))
     data.email && data.password
-      ? console.log('yes')
+      ? 
       : setMsg('Los campos son obligatorios')
   }
   return(
