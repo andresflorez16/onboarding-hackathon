@@ -9,6 +9,8 @@ justify-content: center;
 align-items: center;
 background-color: #fff9;
 border-radius: 20px;
+box-shadow:  -5px 5px 60px #bebebe44,
+             5px -5px 60px #fff6;
 @media (max-width: 950px) {
   flex-wrap: wrap;
 }
