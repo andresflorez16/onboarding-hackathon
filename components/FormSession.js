@@ -2,6 +2,8 @@ import styled, { keyframes } from 'styled-components'
 import Input from 'components/Input'
 import ButtonSessions from 'components/buttons/ButtonMethods'
 import Link from 'next/link'
+import Methods from 'components/MethodsPopups'
+import { useState, useEffect } from 'react'
 
 const inputHighlighter = keyframes`
 from {
@@ -20,6 +22,7 @@ height: 80%;
 display: flex;
 justify-content: center;
 align-items: center;
+flex-direction: column;
 @media (max-width: 1000px) {
   width: 90%;
 }
@@ -42,7 +45,7 @@ form {
   width: 100%;
   height: 100%;
 }
-div {
+.inputDiv {
   margin: 50px 0;
   position: relative;
   display: grid;
@@ -140,20 +143,39 @@ div {
    animation: ${inputHighlighter} 0.3s ease;
   }
 }
+.msg {
+  display: block;
+  color: red;
+  text-align: center;
+}
 
 `
 
 export default function FormSession(props) {
+  const [msg, setMsg] = useState('')
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const data = Object.fromEntries(new FormData(e.target))
+    data.email && data.password
+      ? console.log('yes')
+      : setMsg('Los campos son obligatorios')
+  }
   return(
     <ContainerDiv>
-      <form>
-        <div>
-          <Input type={"email"}>Correo electrónico</Input>
+      <form onSubmit={handleSubmit}>
+        <div className="inputDiv">
+          <Input type={"email"} name={'email'}>Correo electrónico</Input>
         </div>
-        <div>
-          <Input type={"password"}>Contraseña</Input>
+        <div className="inputDiv">
+          <Input type={"password"} name={'password'}>Contraseña</Input>
         </div>
-        <div>
+        {
+          msg
+            ? <span className='msg'><strong>{msg}</strong></span>
+            : null
+        }
+        <div className="inputDiv">
           <ButtonSessions type='submit'>
             {
               props.method === 'login'
@@ -168,6 +190,7 @@ export default function FormSession(props) {
           }
         </div>
       </form>
+      <Methods />
     </ContainerDiv>
   )
 }
