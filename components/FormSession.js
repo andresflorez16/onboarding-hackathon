@@ -3,8 +3,10 @@ import Input from 'components/Input'
 import ButtonSessions from 'components/buttons/ButtonMethods'
 import Link from 'next/link'
 import Methods from 'components/MethodsPopups'
-import { useState, useEffect } from 'react'
-import { loginEmailPassword, addUser } from 'firebase/cliente'
+import Spinner from 'components/Spinner'
+import { useState, useEffect, useRef } from 'react'
+import { loginEmailPassword, addUser } from '../firebase/client'
+import { errorsAuth } from '../firebase/errors'
 
 const inputHighlighter = keyframes`
 from {
@@ -45,6 +47,11 @@ flex-direction: column;
 form {
   width: 100%;
   height: 100%;
+}
+.buttonDiv {
+  display: grid;
+  place-items: center;
+  margin: 10px 0;
 }
 .inputDiv {
   margin: 50px 0;
@@ -154,44 +161,72 @@ form {
 
 export default function FormSession(props) {
   const [msg, setMsg] = useState('')
+  const [user, setUser] = useState(null)
+  const form = useRef(null)
 
   const handleSubmit = e => {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.target))
     data.email && data.password
-      ? 
+      ? props.method === 'signin' 
+        ? addUser(data)
+          .then(cred => console.log(cred))
+          .catch(err => console.log(err.code))
+        : loginEmailPassword(data)
+          .then(cred => setUser(cred))
+          .catch(err => console.log('Error loging', err.code))
       : setMsg('Los campos son obligatorios')
   }
+
+  const handleChange = e => {
+    e.preventDefault()
+    e.target.value && setMsg('')
+  }
+
+  const handleChangeMethod = e => {
+    e.preventDefault()
+    setMsg('')
+    form.current.reset()
+  }
+
   return(
     <ContainerDiv>
-      <form onSubmit={handleSubmit}>
-        <div className="inputDiv">
-          <Input type={"email"} name={'email'}>Correo electrónico</Input>
-        </div>
-        <div className="inputDiv">
-          <Input type={"password"} name={'password'}>Contraseña</Input>
-        </div>
-        {
-          msg
-            ? <span className='msg'><strong>{msg}</strong></span>
-            : null
-        }
-        <div className="inputDiv">
-          <ButtonSessions type='submit'>
-            {
-              props.method === 'login'
-                ? 'Iniciar sesión'
-                : 'Regístrate'
-            }
-          </ButtonSessions>
-          {
-            props.method === 'login'
-              ? <span className='spanMethod'>Aún no tienes una cuenta, <Link href={'/personas/signin'} className=""><strong>Crea una aquí</strong></Link></span>
-              : <span className='spanMethod'>Ya tienes una cuenta, <Link href={'/personas/login'} className=""><strong>Entra aquí</strong></Link></span>
-          }
-        </div>
-      </form>
-      <Methods />
+      {
+        user
+          ?
+            <>
+              <form ref={form} onSubmit={handleSubmit}>
+                <div className="inputDiv">
+                  <Input type={"email"} name={'email'} onChange={handleChange}>Correo electrónico</Input>
+                </div>
+                <div className="inputDiv">
+                  <Input type={"password"} name={'password'} onChange={handleChange}>Contraseña</Input>
+                </div>
+                {
+                  msg
+                    ? <span className='msg'><strong>{msg}</strong></span>
+                    : null
+                }
+                <div className="buttonDiv">
+                  <ButtonSessions type='submit'>
+                    {
+                      props.method === 'login'
+                        ? 'Iniciar sesión'
+                        : 'Regístrate'
+                    }
+                  </ButtonSessions>
+                  {
+                    props.method === 'login'
+                      ? <span className='spanMethod'>Aún no tienes una cuenta, <Link href={'/personas/signin'} className=""><strong onClick={handleChangeMethod}>Crea una aquí</strong></Link></span>
+                      : <span className='spanMethod'>Ya tienes una cuenta, <Link href={'/personas/login'} className=""><strong onClick={handleChangeMethod}>Entra aquí</strong></Link></span>
+                  }
+                </div>
+            </form>
+            <Methods />
+          </>
+          : <Spinner />
+      }
+      
     </ContainerDiv>
   )
 }
