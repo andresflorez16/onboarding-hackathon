@@ -3,6 +3,8 @@ import {
   signInWithPopup,
   getAuth,
   GoogleAuthProvider,
+  FacebookAuthProvider,
+  OAuthProvider,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -21,7 +23,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 const auth = getAuth()
 
-const userInfo = cred => ({ email: cred.email })
+const userInfo = cred => ({ email: cred.email, displayName: cred.displayName, image: cred.photoURL })
 
 export const onAuthUser = onChange => {
   return onAuthStateChanged(auth, credential => {
@@ -37,6 +39,27 @@ export const addUser = (user) => {
 export const loginEmailPassword = (user) => {
   return signInWithEmailAndPassword(auth, user.email, user.password)
 }
+
+export const loginFacebook = () => {
+  const facebookProvider = new FacebookAuthProvider()
+  return signInWithPopup(auth, facebookProvider)
+    .then(cred => userInfo(cred.user))
+    .catch(err => console.log('Error facebook', err))
+}
+
+export const loginGmail = () => {
+  const gmailProvider = new GoogleAuthProvider
+  return signInWithPopup(auth, gmailProvider)
+    .then(credential => userInfo(credential.user))
+    .catch(err => console.log(err))
+}
+
+/*export const loginOutlook = () => {*/
+  /*const outlookProvider = new OAuthProvider('microsoft.com')*/
+  /*return signInWithPopup(auth, outlookProvider)*/
+    /*.then(cred => console.log(cred))*/
+    /*.catch(err => console.log('Err Outlook', err))*/
+/*}*/
 
 export const signOutUser = () => {
   signOut(auth)

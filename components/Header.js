@@ -3,6 +3,7 @@ import Image from 'next/image'
 import ButtonSignin from 'components/buttons/ButtonSignIn'
 import ButtonSignOut from 'components/buttons/ButtonSignOut'
 import Button from 'components/buttons/Button'
+import Avatar from 'components/Avatar'
 import Link from 'next/link'
 import useUser, { USER_STATES } from 'hooks/useUser'
 import { useEffect } from 'react'
@@ -83,6 +84,7 @@ export default function Header() {
           user
             ?
               <div className='buttons'>
+                <Avatar user={user}/>
                 <ButtonSignOut />
               </div>
             :

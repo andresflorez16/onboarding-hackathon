@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Image from 'next/image'
+import { loginFacebook, loginGmail, loginOutlook } from '../firebase/client'
 
 const MethodsDiv = styled.div`
 display: flex;
@@ -22,16 +23,14 @@ box-shadow:  -5px 5px 60px #bebebe44,
 `
 
 export default function Methods() {
+
   return(
     <MethodsDiv>
-      <div className='providerDiv'>
+      <div className='providerDiv' onClick={loginGmail}>
         <Image src={'/google.png'} width={50} height={50} />
       </div>
-      <div className='providerDiv'>
+      <div className='providerDiv' onClick={loginFacebook}>
         <Image src={'/facebook.png'} width={50} height={50} />
-      </div>
-      <div className='providerDiv'>
-        <Image src={'/outlook.png'} width={50} height={50} />
       </div>
     </MethodsDiv>
   )
