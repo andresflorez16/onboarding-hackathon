@@ -7,6 +7,8 @@ import Spinner from 'components/Spinner'
 import { useState, useEffect, useRef } from 'react'
 import { loginEmailPassword, addUser } from '../firebase/client'
 import { errorsAuth } from '../firebase/errors'
+import useUser, { USER_STATES } from 'hooks/useUser'
+import { useRouter } from 'next/router'
 
 const inputHighlighter = keyframes`
 from {
@@ -161,8 +163,16 @@ form {
 
 export default function FormSession(props) {
   const [msg, setMsg] = useState('')
-  const [user, setUser] = useState(null)
+
   const form = useRef(null)
+
+  const user = useUser()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    user && router.push('/cuenta')
+  }, [user])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -171,10 +181,10 @@ export default function FormSession(props) {
       ? props.method === 'signin' 
         ? addUser(data)
           .then(cred => console.log(cred))
-          .catch(err => console.log(err.code))
+          .catch(err => setMsg(errorsAuth(err.code)))
         : loginEmailPassword(data)
-          .then(cred => setUser(cred))
-          .catch(err => console.log('Error loging', err.code))
+          .then(cred => console.log(cred))
+          .catch(err => setMsg(errorsAuth(err.code)))
       : setMsg('Los campos son obligatorios')
   }
 
@@ -183,50 +193,44 @@ export default function FormSession(props) {
     e.target.value && setMsg('')
   }
 
-  const handleChangeMethod = e => {
-    e.preventDefault()
-    setMsg('')
-    form.current.reset()
-  }
-
   return(
     <ContainerDiv>
       {
-        user
-          ?
-            <>
-              <form ref={form} onSubmit={handleSubmit}>
-                <div className="inputDiv">
-                  <Input type={"email"} name={'email'} onChange={handleChange}>Correo electrónico</Input>
-                </div>
-                <div className="inputDiv">
-                  <Input type={"password"} name={'password'} onChange={handleChange}>Contraseña</Input>
-                </div>
-                {
-                  msg
-                    ? <span className='msg'><strong>{msg}</strong></span>
-                    : null
-                }
-                <div className="buttonDiv">
-                  <ButtonSessions type='submit'>
-                    {
-                      props.method === 'login'
-                        ? 'Iniciar sesión'
-                        : 'Regístrate'
-                    }
-                  </ButtonSessions>
+        user === USER_STATES.NOT_KNOWN && <Spinner />
+      }
+      {
+        user === USER_STATES.NOT_LOGGED &&
+          <>
+            <form ref={form} onSubmit={handleSubmit}>
+              <div className="inputDiv">
+                <Input type={"email"} name={'email'} onChange={handleChange}>Correo electrónico</Input>
+              </div>
+              <div className="inputDiv">
+                <Input type={"password"} name={'password'} onChange={handleChange}>Contraseña</Input>
+              </div>
+              {
+                msg
+                  ? <span className='msg'><strong>{msg}</strong></span>
+                  : null
+              }
+              <div className="buttonDiv">
+                <ButtonSessions type='submit'>
                   {
                     props.method === 'login'
-                      ? <span className='spanMethod'>Aún no tienes una cuenta, <Link href={'/personas/signin'} className=""><strong onClick={handleChangeMethod}>Crea una aquí</strong></Link></span>
-                      : <span className='spanMethod'>Ya tienes una cuenta, <Link href={'/personas/login'} className=""><strong onClick={handleChangeMethod}>Entra aquí</strong></Link></span>
+                      ? 'Iniciar sesión'
+                      : 'Regístrate'
                   }
-                </div>
-            </form>
-            <Methods />
-          </>
-          : <Spinner />
+                </ButtonSessions>
+                {
+                  props.method === 'login'
+                    ? <span className='spanMethod'>Aún no tienes una cuenta, <Link href={'/personas/signin'} className=""><strong>Crea una aquí</strong></Link></span>
+                    : <span className='spanMethod'>Ya tienes una cuenta, <Link href={'/personas/login'} className=""><strong>Entra aquí</strong></Link></span>
+                }
+              </div>
+          </form>
+          <Methods />
+        </>
       }
-      
     </ContainerDiv>
   )
 }

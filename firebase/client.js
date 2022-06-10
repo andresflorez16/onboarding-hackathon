@@ -37,3 +37,7 @@ export const addUser = (user) => {
 export const loginEmailPassword = (user) => {
   return signInWithEmailAndPassword(auth, user.email, user.password)
 }
+
+export const signOutUser = () => {
+  signOut(auth)
+}

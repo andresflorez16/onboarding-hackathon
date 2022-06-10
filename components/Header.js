@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import Image from 'next/image'
 import ButtonSignin from 'components/buttons/ButtonSignIn'
+import ButtonSignOut from 'components/buttons/ButtonSignOut'
 import Button from 'components/buttons/Button'
 import Link from 'next/link'
+import useUser, { USER_STATES } from 'hooks/useUser'
+import { useEffect } from 'react'
 
 const HeaderContainer = styled.div`
 position: fixed;
@@ -60,6 +63,12 @@ header {
 `
 
 export default function Header() {
+  const user = useUser()
+
+  useEffect(() => {
+    user
+  }, [user])
+
   return(
     <HeaderContainer>
       <header>
@@ -70,10 +79,18 @@ export default function Header() {
             </a>
           </Link>
         </div>
-        <div className='buttons'>
-          <ButtonSignin />
-          <Button route="/personas/login" >Inicia sesión</Button>
-        </div>
+        {
+          user
+            ?
+              <div className='buttons'>
+                <ButtonSignOut />
+              </div>
+            :
+              <div className='buttons'>
+                <ButtonSignin />
+                <Button route="/personas/login" >Inicia sesión</Button>
+              </div>
+        }
       </header>
     </HeaderContainer>
   )
