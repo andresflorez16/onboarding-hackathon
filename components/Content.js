@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Button from 'components/buttons/Button'
+import useUser, { USER_STATES } from '../hooks/useUser'
 
 const ContainerDiv = styled.div`
 width: 95%;
@@ -68,6 +69,8 @@ section {
 
 
 export default function Content() {
+  const user = useUser()
+  console.log(user)
   return(
     <>
       <ContainerDiv>
