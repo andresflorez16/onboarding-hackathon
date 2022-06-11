@@ -23,7 +23,11 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 const auth = getAuth()
 
-const userInfo = cred => ({ email: cred.email, displayName: cred.displayName, image: cred.photoURL })
+const userInfo = cred => ({
+  email: cred.email,
+  displayName: cred.displayName ? cred.displayName : cred.email.split('@')[0],
+  image: cred.photoURL ? cred.photoURL : '/user.png'
+})
 
 export const onAuthUser = onChange => {
   return onAuthStateChanged(auth, credential => {
