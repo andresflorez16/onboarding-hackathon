@@ -6,7 +6,7 @@ import Button from 'components/buttons/Button'
 import Avatar from 'components/Avatar'
 import Link from 'next/link'
 import useUser, { USER_STATES } from 'hooks/useUser'
-import { useEffect } from 'react'
+import { useEffect, useState} from 'react'
 
 const HeaderContainer = styled.div`
 position: fixed;
@@ -40,7 +40,7 @@ header {
   justify-content: center;
   align-items: center;
   @media (max-width: 1200px) {
-    width: 50%;
+    width: 55%;
   }
   @media (max-width: 750px) {
     width: 80%;
@@ -65,16 +65,17 @@ header {
 
 export default function Header() {
   const user = useUser()
+  const [url, setUrl] = useState('/')
 
   useEffect(() => {
-    user
+    user && setUrl('/cuenta')
   }, [user])
 
   return(
     <HeaderContainer>
       <header>
         <div className='logo'>
-          <Link href='/' passHref>
+          <Link href={url} passHref>
             <a>
               <Image style={{ cursor: 'pointer' }} src={'/bbva.png'} width={133} height={40}/>
             </a>

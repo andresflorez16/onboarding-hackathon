@@ -77,7 +77,7 @@ export default function Content() {
           <span>Empieza ahorrar desde tu casa</span>
           <h1>¡Ahorra tu dinero!</h1>
           <h2>Abre ya tu cuenta de ahorros/corriente</h2>
-          <Button user={user} route="/personas/login" >Empieza aquí</Button>
+          <Button route="/personas/login" >Empieza aquí</Button>
         </section>
         <div className='image'>
           <img src='/cerdito2.jpg' alt='image'/>

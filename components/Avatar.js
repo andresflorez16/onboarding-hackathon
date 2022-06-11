@@ -9,6 +9,7 @@ align-items: center;
 padding: 3px 7px;
 margin-right: 10px;
 cursor: pointer;
+
 .img {
   border-radius: 50%;
 }
@@ -25,10 +26,6 @@ p {
   letter-spacing: 0.08em;
   padding: 0 0 0 5px;
   color: #fff;
-}
-@media (max-width: 1000px) {
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 @media (max-width: 380px) {

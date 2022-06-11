@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import useUser from 'hooks/useUser'
 
 const ButtonDiv = styled.button`
  background: #004481;
@@ -60,10 +61,11 @@ p {
 
 export default function Button(props) {
   const [url, setUrl] = useState('/personas/login')
+  const user = useUser()
 
   useEffect(() => {
-    props.user && setUrl('/cuenta')
-  }, [props.user])
+    user && setUrl('/cuenta')
+  }, [user])
 
   return(
     <Link href={url}>
