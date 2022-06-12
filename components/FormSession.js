@@ -10,17 +10,6 @@ import { errorsAuth } from '../firebase/errors'
 import useUser, { USER_STATES } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 
-const inputHighlighter = keyframes`
-from {
-  background: #5264AE;
- }
-
- to {
-  width: 0;
-  background: transparent;
- }
-`
-
 const ContainerDiv = styled.div`
 width: 70%;
 height: 80%;
@@ -55,104 +44,7 @@ form {
   place-items: center;
   margin: 10px 0;
 }
-.inputDiv {
-  margin: 50px 0;
-  position: relative;
-  display: grid;
-  place-items: center;
-  .input {
-   font-size: 1.5em;
-   padding: 10px 10px 10px 5px;
-   display: inline-block;
-   width: 70%;
-   border: none;
-   border-bottom: 1px solid #515151;
-   background: transparent;
-   font-family: Helvetica;
-   margin-top: 20px;
-  @media (max-width: 880px) {
-    width: 80%;
-  }
-  @media (max-width: 590px) {
-    font-size: 1.3em;
-  }
-  @media (max-width: 590px) {
-    width: 90%;
-    font-size: 1.2em;
-  }
-  @media (max-width: 400px) {
-    font-size: 1em;
-  }
-  }
-  .input:focus {
-   outline: none;
-  }
 
-  label {
-   font-family: Helvetica;
-   color: #999;
-   font-size: 1em;
-   font-weight: normal;
-   position: absolute;
-   pointer-events: none;
-   transition: 0.2s ease all;
-   -moz-transition: 0.2s ease all;
-   -webkit-transition: 0.2s ease all;
-  }
-
-  .input ~ label, .input:valid ~ label {
-   top: -20px;
-   font-size: 2em;
-   color: #5264AE;
-  @media (max-width: 370px) {
-    font-size: 1.5em;
-  }
-  }
-
-  .bar {
-   position: relative;
-   display: block;
-   width: 200px;
-  }
-
-  .bar:before, .bar:after {
-   content: '';
-   height: 2px;
-   width: 0;
-   bottom: 1px;
-   position: absolute;
-   background: #5264AE;
-   transition: 0.2s ease all;
-   -moz-transition: 0.2s ease all;
-   -webkit-transition: 0.2s ease all;
-  }
-
-  .bar:before {
-   left: 50%;
-  }
-
-  .bar:after {
-   right: 50%;
-  }
-
-  .input:focus ~ .bar:before, .input:focus ~ .bar:after {
-   width: 50%;
-  }
-
-  .highlight {
-   position: absolute;
-   height: 60%;
-   width: 100px;
-   top: 25%;
-   left: 50%;
-   pointer-events: none;
-   opacity: 0.5;
-  }
-
-  .input:focus ~ .highlight {
-   animation: ${inputHighlighter} 0.3s ease;
-  }
-}
 .msg {
   display: block;
   color: red;
@@ -202,12 +94,8 @@ export default function FormSession(props) {
         user === USER_STATES.NOT_LOGGED &&
           <>
             <form ref={form} onSubmit={handleSubmit}>
-              <div className="inputDiv">
-                <Input type={"email"} name={'email'} onChange={handleChange}>Correo electrónico</Input>
-              </div>
-              <div className="inputDiv">
-                <Input type={"password"} name={'password'} onChange={handleChange}>Contraseña</Input>
-              </div>
+              <Input type={"email"} name={'email'} onChange={handleChange}>Correo electrónico</Input>
+              <Input type={"password"} name={'password'} onChange={handleChange}>Contraseña</Input>
               {
                 msg
                   ? <span className='msg'><strong>{msg}</strong></span>

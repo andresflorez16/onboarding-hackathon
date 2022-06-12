@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Container = styled.div`
 width: 100%;
@@ -107,26 +108,30 @@ export default function Accounts() {
   return(
     <Container>
       <div className='savings'>
-        <div className="card">
-          <div className="card-image">
-            <Image src={'/savings.jpg'} width={500} height={500}/>
-          </div>
-            <div className="card-description">
-              <p className="text-title">Cuenta de ahorros</p>
-              <p className="text-body">Si necesitas ahorrar, esta es tu opción!</p>
+        <Link href={'/cuenta/ahorros'}>
+          <div className="card">
+            <div className="card-image">
+              <Image src={'/savings.jpg'} width={500} height={500}/>
             </div>
-        </div>
+              <div className="card-description">
+                <p className="text-title">Cuenta de ahorros</p>
+                <p className="text-body">Si necesitas ahorrar, esta es tu opción!</p>
+              </div>
+          </div>
+        </Link>
       </div>
       <div className='checking'>
-        <div className="card">
-          <div className="card-image">
-            <Image src={'/checking.jpg'} width={500} height={500}/>
-          </div>
-            <div className="card-description">
-              <p className="text-title">Cuenta corriente</p>
-              <p className="text-body">Ingresa y adquiere tus fondos de forma inmediata</p>
+        <Link href={'/cuenta/corriente'}>
+          <div className="card">
+            <div className="card-image">
+              <Image src={'/checking.jpg'} width={500} height={500}/>
             </div>
-        </div>
+              <div className="card-description">
+                <p className="text-title">Cuenta corriente</p>
+                <p className="text-body">Ingresa y adquiere tus fondos de forma inmediata</p>
+              </div>
+          </div>
+        </Link>
       </div>
     </Container>
   )

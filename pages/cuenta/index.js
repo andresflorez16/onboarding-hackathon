@@ -4,12 +4,12 @@ import Spinner from 'components/Spinner'
 import Accounts from 'components/Accounts'
 import { useEffect } from 'react'
 import Header from 'components/Header'
+import Head from 'next/head'
 
 const Container = styled.div`
 width: 50%;
 height: 75%;
 background: #D3CCE3;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 padding: 10px;
 border-radius: 10px;
@@ -49,6 +49,7 @@ export default function Account() {
 
   return(
     <>
+      <Head><title>BBVA Onboarding Digital | Cuenta</title></Head>
       {
         user === USER_STATES.NOT_KNOWN && 
           <>
@@ -62,7 +63,7 @@ export default function Account() {
             <Header />
             <Container>
               <h2>Bienvenido {user.displayName}</h2>
-              <p>Aquí podrás digilenciar los pasos para adquirir una cuenta de ahorros o corriente, de forma digital!</p>
+              <p>Aquí podrás digilenciar los pasos para adquirir una <strong>cuenta de ahorros</strong> o <strong>corriente</strong>, de forma digital!</p>
               <p><strong>Elige el tipo de cuenta que necesitas:</strong></p>
               <Accounts />
             </Container>

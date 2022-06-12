@@ -17,7 +17,7 @@ export default function useUser() {
   }, [])
 
   useEffect(() => {
-    if (router.asPath === '/cuenta') {
+    if (router.asPath === '/cuenta' || router.asPath === '/cuenta/ahorros') {
       user === USER_STATES.NOT_LOGGED && router.push('/')
     }
   }, [user])
