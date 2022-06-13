@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useState } from 'react'
 
 const Container = styled.div`
 details {
@@ -119,8 +120,11 @@ label {
 }
 `
 export default function Select() {
+	const [value, setValue] = useState(null)
+
   const handleChange = e => {
-    console.log(e.target.value)
+		setValue({ value: e.target.value, name: e.target.id })
+		console.log(value)
   }
   const handleForm = e => {
     e.preventDefault()
@@ -131,18 +135,18 @@ export default function Select() {
     <>
       <Container>
         <form onSubmit={handleForm}>
-        <details class="custom-select">
-          <summary class="radios">
-		        <input type="radio" name="item" id="default" title="Tipo de identificación" defaultChecked />
-		        <input type="radio" name="item" id="item1" title="Cédula de ciudadanía" />
-		        <input type="radio" name="item" id="item2" title="Pasaporte" />
+        <details className="custom-select">
+          <summary className="radios">
+		        <input type="radio" name="item" id="default" title="Tipo de identificación" defaultChecked onChange={handleChange}/>
+		        <input type="radio" name="item" id="item1" title="Cédula de ciudadanía" onChange={handleChange} />
+		        <input type="radio" name="item" id="item2" title="Pasaporte" onChange={handleChange}/>
 	        </summary>
-          <ul class="list">
+          <ul className="list">
             <li>
-              <label for="item1">Cédula de ciudadanía</label>
+              <label htmlFor="item1">Cédula de ciudadanía</label>
             </li>
             <li>
-              <label for="item2">Pasaporte</label>
+              <label htmlFor="item2">Pasaporte</label>
             </li>
           </ul>
         </details>
