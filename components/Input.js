@@ -12,7 +12,7 @@ from {
 `
 
 const Container = styled.div`
-margin: ${props => props.size === 'reduced' ? '20px 0' : '50px 0'};
+margin: ${props => props.size === 'reduced' ? '5px 0' : '50px 0'};
 position: relative;
 display: grid;
 place-items: center;
@@ -21,23 +21,24 @@ place-items: center;
    font-size: ${props => props.size === 'reduced' ? '1.1em' : '1.5em'};
    padding: 10px 10px 10px 5px;
    display: inline-block;
-   width: ${props => props.size === 'reduced' ? '45%' : '70%'};
+   width: ${props => props.size === 'reduced' ? '60%' : '70%'};
    border: none;
    border-bottom: 1px solid #515151;
    background: transparent;
    font-family: Helvetica;
    margin-top: 20px;
   @media (max-width: 880px) {
-    width: 80%;
+    width: ${props => props.size === 'reduced' ? '100%' : '80%'};
   }
   @media (max-width: 590px) {
     font-size: 1.3em;
   }
   @media (max-width: 590px) {
-    width: 90%;
+    width: ${props => props.size === 'reduced' ? '100%' : '90%'};
     font-size: 1.2em;
   }
   @media (max-width: 400px) {
+    width: 90%;
     font-size: 1em;
   }
   }
@@ -59,11 +60,11 @@ place-items: center;
   }
 
   .input ~ label, .input:valid ~ label {
-   top: ${props => props.size === 'reduced' ? '-5px' : '-20px'};
-   font-size: ${props => props.size === 'reduced' ? '1.5em' : '2em'};
+   top: ${props => props.size === 'reduced' ? '0' : '-20px'};
+   font-size: ${props => props.size === 'reduced' ? '1em' : '1.2em'};
    color: #004481;
   @media (max-width: 370px) {
-    font-size: 1.5em;
+    font-size: ${props => props.size === 'reduced' ? '1em' : '1.2em'};
   }
   }
 
@@ -113,10 +114,9 @@ place-items: center;
 `
 
 export default function Input(props) {
-
   return(
     <Container size={props.size}>
-      <input required type={props.type} name={props.name} onChange={props.onChange} className="input"/>
+      <input required type={props.type} name={props.name} onChange={props.onChange} className="input" pattern={props.pattern} min={props.min} step={props.step}/>
       <span className="highlight"></span>
       <span className="bar"></span>
       <label>{props.children}</label>

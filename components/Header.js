@@ -16,6 +16,7 @@ width: 100%;
 height: 10%;
 box-shadow: 0 3px 3px #333;
 padding: 10px 20px;
+z-index: 10;
 @media (max-width: 560px) {
   height: 18%;
 }

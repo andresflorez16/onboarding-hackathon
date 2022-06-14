@@ -1,9 +1,9 @@
-import Select from 'components/Select'
+import Dropdown from 'components/Dropdown'
 
 export default function Corriente() {
   return(
     <div>
-      <Select />
+      <Dropdown />
     </div>
   )
 }
