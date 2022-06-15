@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import { useState } from 'react'
 
 const inputHighlighter = keyframes`
 from {
@@ -111,15 +112,42 @@ place-items: center;
   .input:focus ~ .highlight {
    animation: ${inputHighlighter} 0.3s ease;
   }
+
+  .onlyNumbers {
+    position: absolute;
+    color: red;
+    font-size: 12px;
+    letter-spacing: 1px;
+    left: 35px;
+    top: 14px;
+  }
 `
 
 export default function Input(props) {
+  const [isNumber, setIsNumber] = useState(null)
+
+  const handleChangeNumbers = e => {
+    if(e.target.value.length > 0) RegExp('[0-9]').test(e.target.value) ? setIsNumber(true) : setIsNumber(false)
+    else setIsNumber(null)
+  }
+
   return(
     <Container size={props.size}>
-      <input required type={props.type} name={props.name} onChange={props.onChange} className="input" pattern={props.pattern} min={props.min} step={props.step}/>
+      {
+        props.numbers
+          ?
+            <>
+              <input required type={props.type} name={props.name} onChange={handleChangeNumbers} className="input" pattern={props.pattern}/>
+              {
+                isNumber === false && <span className='onlyNumbers'>Digíte solo números</span>
+              }
+            </>
+          :
+            <input required type={props.type} name={props.name} onChange={props.onChange} className="input" pattern={props.pattern}/>
+      }
       <span className="highlight"></span>
       <span className="bar"></span>
-      <label>{props.children}</label>
+      <label><strong>{props.children}</strong></label>
     </Container>
   )
 }

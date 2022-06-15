@@ -14,7 +14,7 @@ transition: all .2s ease;
   background-color: #ddd;
 }
 `
-export default function Dropdown(props) {
+export default function DropdownCity(props) {
   return(
     <>
       <Select onChange={props.onChange}>

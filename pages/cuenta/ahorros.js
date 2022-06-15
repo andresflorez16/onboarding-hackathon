@@ -17,8 +17,6 @@ align-items: center;
 justify-content: center;
 flex-direction: column;
 border-radius: 10px;
-//background: #D3CCE3;
-//background: linear-gradient(to right, #E9E4F0, #D3CCE3);
 background-image: url('/saving1.jpg');
 background-size: 100% 100%;
 box-shadow:  -5px 5px 60px #bebebe44,
@@ -48,6 +46,8 @@ h2 {
   color: #fff;
   font-size: 2em;
   letter-spacing: 5px;
+  margin: 0;
+  text-align: center;
 }
 
 form {
@@ -58,7 +58,7 @@ form {
   gap: 10px;
   grid-template-rows: none;
   width: 90%;
-  padding-bottom: 10px;
+  padding-bottom: 1px;
   p {
     text-align: center;
   }
@@ -91,45 +91,57 @@ form {
   .containerButton {
     grid-column: 1 / span 2;
   }
+  .msg {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: red;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
 }
 `
 
 export default function Savings() {
   const [ideValue, setIdeValue] = useState('default')
-  const [isNumber, setIsNumber] = useState(null)
+  const [city, setCity] = useState('default')
+  const [msg, setMsg] = useState('')
 
   const handleChangeDropdown = e => {
     setIdeValue(e.target.value)
   }
 
-  const handleChangeNumbers = e => {
-    if(e.target.value.length > 0) RegExp('[0-9]').test(e.target.value) ? setIsNumber(true) : setIsNumber(false)
-    else setIsNumber(null)
+  const handleChangeCity = e => { setCity(e.target.value) }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (city != 'default' && ideValue != 'default') {
+      setMsg('')
+      const data = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city }
+    } else setMsg('Todos los campos son obligatorios')
   }
+
   return(
     <>
       <Head><title>Nueva cuenta de ahorros</title></Head>
       <Header />
       <Container>
         <h2>Crea tu cuenta de ahorros</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className='containerInput'>
             <p><strong>Lo primero que necesitamos son tus datos personales:</strong></p>
             <Input size={'reduced'} type={"text"} name={"name"}>Nombre</Input> 
             <Input size={'reduced'} type={"text"} name={"lastname"}>Apellido</Input> 
-            <Input size={'reduced'} type={"text"} name={"phone"} onChange={handleChangeNumbers}>Celular</Input> 
-            {
-              isNumber === false && <span>Digíte solo números</span>
-            }
+            <Input size={'reduced'} type={"text"} name={"phone"} numbers={true}>Celular</Input> 
             <Input size={'reduced'} type={"email"} name={"email"}>Correo Electrónico</Input> 
             <div className='dropdown'>
-              <label>Seleccione su tipo de documento</label>
+              <label><strong>Seleccione su tipo de documento</strong></label>
               <Dropdown onChange={handleChangeDropdown} />
             </div>
             {
               ideValue != 'default'
                 ?
-                <Input size={'reduced'} type={"text"} name={"identification"}>Número de identificación</Input> 
+                  <Input size={'reduced'} type={"text"} name={"identification"} numbers={true}>Número de identificación</Input> 
                 : null
             }
           </div>
@@ -138,11 +150,14 @@ export default function Savings() {
             <Input size={'reduced'} type={"text"} name={"pymeName"}>Nombre de la empresa</Input> 
             <Input size={'reduced'} type={"text"} name={"nit"}>NIT</Input> 
             <div className='dropdown'>
-              <label>Seleccione la ubicación de su empresa</label>
-              <DropdownCity />
+              <label><strong>Seleccione la ubicación de su empresa</strong></label>
+              <DropdownCity onChange={handleChangeCity} />
             </div>
           </div>
           <div className='containerButton'>
+            {
+              msg ? <span className='msg'>{msg}</span> : null
+            }
             <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
           </div>
         </form>
