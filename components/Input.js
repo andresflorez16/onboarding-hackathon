@@ -22,14 +22,14 @@ place-items: center;
    font-size: ${props => props.size === 'reduced' ? '1.1em' : '1.5em'};
    padding: 10px 10px 10px 5px;
    display: inline-block;
-   width: ${props => props.size === 'reduced' ? '60%' : '70%'};
+   width: 70%;
    border: none;
    border-bottom: 1px solid #515151;
    background: transparent;
    font-family: Helvetica;
    margin-top: 20px;
   @media (max-width: 880px) {
-    width: ${props => props.size === 'reduced' ? '100%' : '80%'};
+    width: ${props => props.size === 'reduced' ? '90%' : '80%'};
   }
   @media (max-width: 590px) {
     font-size: 1.3em;
