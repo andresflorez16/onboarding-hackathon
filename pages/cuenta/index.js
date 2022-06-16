@@ -9,8 +9,10 @@ import Head from 'next/head'
 const Container = styled.div`
 width: 50%;
 height: 75%;
-background: #D3CCE3;  /* fallback for old browsers */
-background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background-image: url('/saving1.jpg');
+background-size: 100% 100%;
+/*background: #D3CCE3;  [> fallback for old browsers <]*/
+/*b<]ackground: linear-gradient(to right, #E9E4F0, #D3CCE3); [> W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 padding: 10px;
 border-radius: 10px;
 box-shadow:  -5px 5px 60px #bebebe44,
@@ -28,12 +30,13 @@ box-shadow:  -5px 5px 60px #bebebe44,
   margin-top: 80px;
 }
 h2 {
-  color: #004481;
+  color: #fff;
   @media (max-height: 569px) {
     font-size: 1.1em;
   }
 }
 p {
+  color: #fff;
  @media (max-height: 569px) {
   font-size: .9em;
  }

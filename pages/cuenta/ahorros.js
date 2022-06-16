@@ -3,6 +3,7 @@ import Header from 'components/Header'
 import ButtonAddAccount from 'components/buttons/ButtonAddAccount'
 import Input from 'components/Input'
 import Dropdown from 'components/Dropdown'
+import ButtonCancel from 'components/buttons/ButtonCancel'
 import DropdownCity from 'components/DropdownCity'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -89,7 +90,21 @@ form {
     }
   }
   .containerButton {
+    margin: auto;
+    margin-bottom: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
     grid-column: 1 / span 2;
+    flex-wrap: wrap;
+    div {
+      margin: 0 10px;
+    }
+    @media (max-width: 415px) {
+      div {
+        margin: 10px 0;
+      }
+    }
   }
   .msg {
     display: block;
@@ -153,12 +168,19 @@ export default function Savings() {
               <label><strong>Seleccione la ubicación de su empresa</strong></label>
               <DropdownCity onChange={handleChangeCity} />
             </div>
+
+            <p style={{ 'color': '#004481' }}><strong>Firmar documento</strong></p>
           </div>
           <div className='containerButton'>
             {
               msg ? <span className='msg'>{msg}</span> : null
             }
-            <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
+            <div>
+              <ButtonCancel>Cancelar</ButtonCancel>
+            </div>
+            <div>
+              <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
+            </div>
           </div>
         </form>
       </Container>
