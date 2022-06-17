@@ -3,15 +3,14 @@ import Header from 'components/Header'
 import ButtonAddAccount from 'components/buttons/ButtonAddAccount'
 import Input from 'components/Input'
 import Dropdown from 'components/Dropdown'
+import Signature from 'components/Signature'
 import ButtonCancel from 'components/buttons/ButtonCancel'
 import ButtonSignature from 'components/buttons/ButtonSignature'
 import DropdownCity from 'components/DropdownCity'
-import Popup from 'reactjs-popup'
-import 'reactjs-popup/dist/index.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const Container = styled.div`
 width: 90%;
@@ -54,7 +53,7 @@ margin-top: 70px;
 }
 h2 {
   color: #fff;
-  font-size: 2em;
+  font-size: 1.5em;
   letter-spacing: 5px;
   margin: 0;
   text-align: center;
@@ -86,6 +85,11 @@ form {
   }
   button {
     margin: 0 auto;
+  }
+  .inputFile {
+    display: block;
+    width: 100%;
+    text-align: center;
   }
   .dropdown {
     width: 100%;
@@ -130,12 +134,7 @@ export default function Savings() {
   const [ideValue, setIdeValue] = useState('default')
   const [city, setCity] = useState('default')
   const [msg, setMsg] = useState('')
-  const [open, setOpen] = useState(false)
-
-  const handlePopup = e => {
-    e.preventDefault()
-    setOpen(!open)
-  }
+  const [file, setFile] = useState(null)
 
   const handleChangeDropdown = e => {
     setIdeValue(e.target.value)
@@ -145,10 +144,18 @@ export default function Savings() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (city != 'default' && ideValue != 'default') {
-      setMsg('')
-      const data = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city }
+    if (city != 'default' && ideValue != 'default' && file) {
+      if (file.type === 'application/pdf') {
+        setMsg('')
+        const data = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file }
+        console.log(data)
+      } else setMsg('El documento subido debe ser PDF')
     } else setMsg('Todos los campos son obligatorios')
+  }
+
+  const handleFile = e => {
+    e.preventDefault()
+    e.target.files[0] && setFile(e.target.files[0])
   }
 
   return(
@@ -174,6 +181,10 @@ export default function Savings() {
                   <Input size={'reduced'} type={"text"} name={"identification"} numbers={true}>Número de identificación</Input> 
                 : null
             }
+            <p style={{ color: '#004481', textAlign: 'center' }}><strong>Documento de identificación</strong></p>
+            <div className='inputFile'>
+              <input type='file' onChange={handleFile} accept='application/pdf'/>
+            </div>
           </div>
           <div className='containerInput'>
             <p><strong>También necesitamos información sobre tú empresa</strong></p>
@@ -185,11 +196,7 @@ export default function Savings() {
             </div>
 
             <p style={{ 'color': '#004481', 'textAlign': 'center' }}><strong>Firmar documento</strong></p>
-            <ButtonSignature onClick={handlePopup}>Firmar</ButtonSignature>
-            <Popup open={open} onClose={handlePopup}>
-              <h1>Contrato</h1>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            </Popup>
+            <Signature />
             </div>
           <div className='containerButton'>
             {

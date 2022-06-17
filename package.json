@@ -13,6 +13,7 @@
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-signature-canvas": "^1.0.6",
     "reactjs-popup": "^2.0.5",
     "styled-components": "^5.3.5"
   },
