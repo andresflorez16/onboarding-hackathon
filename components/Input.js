@@ -13,7 +13,7 @@ from {
 `
 
 const Container = styled.div`
-margin: ${props => props.size === 'reduced' ? '5px 0' : '50px 0'};
+margin: ${props => props.size === 'reduced' ? '0' : '50px 0'};
 position: relative;
 display: grid;
 place-items: center;
@@ -27,7 +27,7 @@ place-items: center;
    border-bottom: 1px solid #515151;
    background: transparent;
    font-family: Helvetica;
-   margin-top: 20px;
+   margin-top: ${props => props.size === 'reduced' ? '10px' : '20px'};
   @media (max-width: 880px) {
     width: ${props => props.size === 'reduced' ? '90%' : '80%'};
   }
@@ -119,7 +119,7 @@ place-items: center;
     font-size: 12px;
     letter-spacing: 1px;
     left: 35px;
-    top: 14px;
+    top: 10px;
   }
 `
 

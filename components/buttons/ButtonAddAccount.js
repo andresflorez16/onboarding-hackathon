@@ -5,7 +5,7 @@ const ButtonDiv = styled.button`
 font-family: inherit;
 background: #004481;
 color: white;
-padding: 1.35em 0;
+padding: 1.1em 0;
 font-size: 17px;
 border: none;
 border-radius: 0.7em;
