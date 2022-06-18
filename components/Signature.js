@@ -23,15 +23,14 @@ border-radius: 10px;
 padding: 5px 10px;
 cursor: pointer;
 border: none;
+transition: opacity .3s ease;
+&:hover {
+  opacity: .6;
+}
 `
 
-export default function Signature() {
+export default function Signature({ clean, save, canvasRef }) {
   const [open, setOpen] = useState(false)
-  const canvasRef = useRef({})
-
-  const clean = () => canvasRef.current.clear()
-
-  const save = () => console.log(canvasRef.current.getTrimmedCanvas().toDataURL("image/png"))
 
   const handlePopup = e => {
     e.preventDefault()

@@ -4,12 +4,19 @@ import {
   getAuth,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  OAuthProvider,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyC0z620tnCsJPMDPvAOu1rlGsroYyjnUkA",
@@ -20,14 +27,20 @@ const firebaseConfig = {
   appId: "1:872913548414:web:20b4a11b756fe28b1d942f"
 };
 
-initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
 const auth = getAuth()
 
 const userInfo = cred => ({
   email: cred.email,
   displayName: cred.displayName ? cred.displayName : cred.email.split('@')[0],
-  image: cred.photoURL ? cred.photoURL : '/user.png'
+  image: cred.photoURL ? cred.photoURL : '/user.png',
+  uid: cred.uid
 })
+
+export const createSavingAccount = data => {
+  return addDoc(collection(db, 'savingAccounts'), data)
+}
 
 export const onAuthUser = onChange => {
   return onAuthStateChanged(auth, credential => {
@@ -57,13 +70,6 @@ export const loginGmail = () => {
     .then(credential => userInfo(credential.user))
     .catch(err => console.log(err))
 }
-
-/*export const loginOutlook = () => {*/
-  /*const outlookProvider = new OAuthProvider('microsoft.com')*/
-  /*return signInWithPopup(auth, outlookProvider)*/
-    /*.then(cred => console.log(cred))*/
-    /*.catch(err => console.log('Err Outlook', err))*/
-/*}*/
 
 export const signOutUser = () => {
   signOut(auth)

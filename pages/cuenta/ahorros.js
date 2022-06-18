@@ -5,12 +5,11 @@ import Input from 'components/Input'
 import Dropdown from 'components/Dropdown'
 import Signature from 'components/Signature'
 import ButtonCancel from 'components/buttons/ButtonCancel'
-import ButtonSignature from 'components/buttons/ButtonSignature'
 import DropdownCity from 'components/DropdownCity'
-import Image from 'next/image'
-import Link from 'next/link'
 import Head from 'next/head'
 import { useState, useRef } from 'react'
+import useUser from 'hooks/useUser'
+import { createSavingAccount } from '../../firebase/client'
 
 const Container = styled.div`
 width: 90%;
@@ -120,8 +119,9 @@ form {
     }
   }
   .msg {
+    position: absolute;
+    bottom: 70px;
     display: block;
-    width: 100%;
     text-align: center;
     color: red;
     margin-bottom: 2px;
@@ -135,6 +135,17 @@ export default function Savings() {
   const [city, setCity] = useState('default')
   const [msg, setMsg] = useState('')
   const [file, setFile] = useState(null)
+  const [signature, setSignature] = useState(null)
+
+  const user = useUser()
+
+  const fileRef = useRef({})
+
+  const canvasRef = useRef({})
+
+  const clean = () => canvasRef.current.clear()
+
+  const save = () => setSignature(canvasRef.current.getTrimmedCanvas().toDataURL("image/png"))
 
   const handleChangeDropdown = e => {
     setIdeValue(e.target.value)
@@ -145,17 +156,25 @@ export default function Savings() {
   const handleSubmit = e => {
     e.preventDefault()
     if (city != 'default' && ideValue != 'default' && file) {
-      if (file.type === 'application/pdf') {
-        setMsg('')
-        const data = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file }
-        console.log(data)
+      if (file.includes('application/pdf')) {
+        if (signature) {
+          setMsg('')
+          const data = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file, signature, uid: user.uid }
+          createSavingAccount(data)
+        } else setMsg('Necesitamos tu firma!')
       } else setMsg('El documento subido debe ser PDF')
     } else setMsg('Todos los campos son obligatorios')
   }
 
   const handleFile = e => {
     e.preventDefault()
-    e.target.files[0] && setFile(e.target.files[0])
+    if (e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFile(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
   }
 
   return(
@@ -183,7 +202,7 @@ export default function Savings() {
             }
             <p style={{ color: '#004481', textAlign: 'center' }}><strong>Documento de identificación</strong></p>
             <div className='inputFile'>
-              <input type='file' onChange={handleFile} accept='application/pdf'/>
+              <input type='file' ref={fileRef} onChange={handleFile} accept='application/pdf'/>
             </div>
           </div>
           <div className='containerInput'>
@@ -196,7 +215,7 @@ export default function Savings() {
             </div>
 
             <p style={{ 'color': '#004481', 'textAlign': 'center' }}><strong>Firmar documento</strong></p>
-            <Signature />
+            <Signature save={save} canvasRef={canvasRef} clean={clean} />
             </div>
           <div className='containerButton'>
             {
