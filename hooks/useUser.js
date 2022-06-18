@@ -17,7 +17,7 @@ export default function useUser() {
   }, [])
 
   useEffect(() => {
-    if (router.asPath === '/cuenta' || router.asPath === '/cuenta/ahorros') {
+    if (router.asPath === '/cuenta' || router.asPath === '/cuenta/ahorros' || router.asPath === '/cuenta/corriente' || router.asPath === '/cuenta/planes/ahorros') {
       user === USER_STATES.NOT_LOGGED && router.push('/')
     }
   }, [user])

@@ -10,7 +10,7 @@ import Head from 'next/head'
 import { useState, useRef } from 'react'
 import useUser from 'hooks/useUser'
 import { createSavingAccount } from '../../firebase/client'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const Container = styled.div`
 width: 90%;
@@ -137,7 +137,7 @@ export default function Savings() {
   const [msg, setMsg] = useState('')
   const [file, setFile] = useState(null)
   const [signature, setSignature] = useState(null)
-  const [data, setData] = useState(null)
+  const router = useRouter()
 
   const user = useUser()
 
@@ -162,8 +162,9 @@ export default function Savings() {
         if (signature) {
           setMsg('')
           const dataForm = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file, signature, uid: user.uid }
-          setData(dataForm)
           createSavingAccount(dataForm)
+            .then(() => router.replace('/cuenta/planes/ahorros'))
+            .catch(err => console.log('Error add', err))
         } else setMsg('Necesitamos tu firma!')
       } else setMsg('El documento subido debe ser PDF')
     } else setMsg('Todos los campos son obligatorios')
@@ -188,6 +189,7 @@ export default function Savings() {
         <h2>Crea tu cuenta de ahorros</h2>
         <form onSubmit={handleSubmit}>
           <div className='containerInput'>
+            <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>Lo primero que necesitamos son tus datos personales:</strong></p>
             <Input size={'reduced'} type={"text"} name={"name"}>Nombre</Input> 
             <Input size={'reduced'} type={"text"} name={"lastname"}>Apellido</Input> 
             <Input size={'reduced'} type={"text"} name={"phone"} numbers={true}>Celular</Input> 
@@ -208,6 +210,7 @@ export default function Savings() {
             </div>
           </div>
           <div className='containerInput'>
+            <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>También necesitamos información sobre tú empresa</strong></p>
             <Input size={'reduced'} type={"text"} name={"pymeName"}>Nombre de la empresa</Input> 
             <Input size={'reduced'} type={"text"} name={"nit"}>NIT</Input> 
             <div className='dropdown'>
@@ -226,15 +229,7 @@ export default function Savings() {
               <ButtonCancel>Cancelar</ButtonCancel>
             </div>
             <div>
-              {
-                data
-                  ? <Link href={'/cuenta/planes/ahorros'}>
-                    <a>
-                      <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
-                    </a>
-                  </Link>
-                  : <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
-              }
+              <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
             </div>
           </div>
         </form>
