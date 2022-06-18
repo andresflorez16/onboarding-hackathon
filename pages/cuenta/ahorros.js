@@ -6,10 +6,11 @@ import Dropdown from 'components/Dropdown'
 import Signature from 'components/Signature'
 import ButtonCancel from 'components/buttons/ButtonCancel'
 import DropdownCity from 'components/DropdownCity'
+import Spinner from 'components/Spinner'
 import Head from 'next/head'
 import { useState, useRef } from 'react'
 import useUser from 'hooks/useUser'
-import { createSavingAccount } from '../../firebase/client'
+import { createSavingAccount, getSavingAccountData } from '../../firebase/client'
 import { useRouter } from 'next/router'
 
 const Container = styled.div`
@@ -137,6 +138,7 @@ export default function Savings() {
   const [msg, setMsg] = useState('')
   const [file, setFile] = useState(null)
   const [signature, setSignature] = useState(null)
+  const [loading, setLoading] = useState(null)
   const router = useRouter()
 
   const user = useUser()
@@ -161,9 +163,20 @@ export default function Savings() {
       if (file.includes('application/pdf')) {
         if (signature) {
           setMsg('')
-          const dataForm = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file, signature, uid: user.uid }
+          const dataForm = { ...Object.fromEntries(new FormData(e.target)), typeIde: ideValue, city, file, signature, uid: user.uid, type: 'ahorros', plan: '' }
           createSavingAccount(dataForm)
-            .then(() => router.replace('/cuenta/planes/ahorros'))
+            .then(() => {
+              setLoading(true)
+              getSavingAccountData(user.uid)
+                .then(resp => {
+                  resp.docs.map(doc => {
+                    if (doc.data().plan === '') {
+                      router.replace(`/cuenta/planes/ahorros/${doc.id}`)
+                    }
+                  })
+                })
+                .catch(err => console.log('Error getting data', err))
+            })
             .catch(err => console.log('Error add', err))
         } else setMsg('Necesitamos tu firma!')
       } else setMsg('El documento subido debe ser PDF')
@@ -186,53 +199,61 @@ export default function Savings() {
       <Head><title>Nueva cuenta de ahorros</title></Head>
       <Header />
       <Container>
-        <h2>Crea tu cuenta de ahorros</h2>
-        <form onSubmit={handleSubmit}>
-          <div className='containerInput'>
-            <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>Lo primero que necesitamos son tus datos personales:</strong></p>
-            <Input size={'reduced'} type={"text"} name={"name"}>Nombre</Input> 
-            <Input size={'reduced'} type={"text"} name={"lastname"}>Apellido</Input> 
-            <Input size={'reduced'} type={"text"} name={"phone"} numbers={true}>Celular</Input> 
-            <Input size={'reduced'} type={"email"} name={"email"}>Correo Electrónico</Input> 
-            <div className='dropdown'>
-              <label><strong>Seleccione su tipo de documento</strong></label>
-              <Dropdown onChange={handleChangeDropdown} />
-            </div>
-            {
-              ideValue != 'default'
-                ?
-                  <Input size={'reduced'} type={"text"} name={"identification"} numbers={true}>Número de identificación</Input> 
-                : null
-            }
-            <p style={{ color: '#004481', textAlign: 'center' }}><strong>Documento de identificación</strong></p>
-            <div className='inputFile'>
-              <input type='file' ref={fileRef} onChange={handleFile} accept='application/pdf'/>
-            </div>
-          </div>
-          <div className='containerInput'>
-            <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>También necesitamos información sobre tú empresa</strong></p>
-            <Input size={'reduced'} type={"text"} name={"pymeName"}>Nombre de la empresa</Input> 
-            <Input size={'reduced'} type={"text"} name={"nit"}>NIT</Input> 
-            <div className='dropdown'>
-              <label><strong>Seleccione la ubicación de su empresa</strong></label>
-              <DropdownCity onChange={handleChangeCity} />
-            </div>
+        {
+          loading && <Spinner />
+        }
+        {
+          loading === null &&
+            <>
+            <h2>Crea tu cuenta de ahorros</h2>
+            <form onSubmit={handleSubmit}>
+              <div className='containerInput'>
+                <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>Lo primero que necesitamos son tus datos personales:</strong></p>
+                <Input size={'reduced'} type={"text"} name={"name"}>Nombre</Input> 
+                <Input size={'reduced'} type={"text"} name={"lastname"}>Apellido</Input> 
+                <Input size={'reduced'} type={"text"} name={"phone"} numbers={true}>Celular</Input> 
+                <Input size={'reduced'} type={"email"} name={"email"}>Correo Electrónico</Input> 
+                <div className='dropdown'>
+                  <label><strong>Seleccione su tipo de documento</strong></label>
+                  <Dropdown onChange={handleChangeDropdown} />
+                </div>
+                {
+                  ideValue != 'default'
+                    ?
+                      <Input size={'reduced'} type={"text"} name={"identification"} numbers={true}>Número de identificación</Input> 
+                    : null
+                }
+                <p style={{ color: '#004481', textAlign: 'center' }}><strong>Documento de identificación</strong></p>
+                <div className='inputFile'>
+                  <input type='file' ref={fileRef} onChange={handleFile} accept='application/pdf'/>
+                </div>
+              </div>
+              <div className='containerInput'>
+                <p style={{ textAlign: 'center', padding: '0', margin: '5px 0' }}><strong>También necesitamos información sobre tú empresa</strong></p>
+                <Input size={'reduced'} type={"text"} name={"pymeName"}>Nombre de la empresa</Input> 
+                <Input size={'reduced'} type={"text"} name={"nit"}>NIT</Input> 
+                <div className='dropdown'>
+                  <label><strong>Seleccione la ubicación de su empresa</strong></label>
+                  <DropdownCity onChange={handleChangeCity} />
+                </div>
 
-            <p style={{ 'color': '#004481', 'textAlign': 'center' }}><strong>Firmar documento</strong></p>
-            <Signature save={save} canvasRef={canvasRef} clean={clean} />
-            </div>
-          <div className='containerButton'>
-            {
-              msg ? <span className='msg'>{msg}</span> : null
-            }
-            <div>
-              <ButtonCancel>Cancelar</ButtonCancel>
-            </div>
-            <div>
-              <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
-            </div>
-          </div>
-        </form>
+                <p style={{ 'color': '#004481', 'textAlign': 'center' }}><strong>Firmar documento</strong></p>
+                <Signature save={save} canvasRef={canvasRef} clean={clean} />
+                </div>
+              <div className='containerButton'>
+                {
+                  msg ? <span className='msg'>{msg}</span> : null
+                }
+                <div>
+                  <ButtonCancel>Cancelar</ButtonCancel>
+                </div>
+                <div>
+                  <ButtonAddAccount>Crear cuenta</ButtonAddAccount>
+                </div>
+              </div>
+            </form>
+            </>
+        }
       </Container>
     </>
   )

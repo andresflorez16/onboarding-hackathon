@@ -15,7 +15,9 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  doc,
+  updateDoc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -40,6 +42,16 @@ const userInfo = cred => ({
 
 export const createSavingAccount = data => {
   return addDoc(collection(db, 'savingAccounts'), data)
+}
+
+export const getSavingAccountData = uid => {
+  const getAccount = query(collection(db, 'savingAccounts'), where('uid', '==', uid))
+  return getDocs(getAccount)
+}
+
+export const updatePlan = (data) => {
+  const ref = doc(db, 'savingAccounts', data.id)
+  return updateDoc(ref, { plan: data.plan })
 }
 
 export const onAuthUser = onChange => {

@@ -4,6 +4,7 @@ import CheckLi from 'components/CheckLi'
 
 const StyledPopup = styled(Popup)`
 &-content {
+  border-radius: 10px;
   width: 50%;
   ul {
     margin: 0;

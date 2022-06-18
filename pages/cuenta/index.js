@@ -41,6 +41,10 @@ p {
   font-size: .9em;
  }
 }
+.myAccounts {
+  position: absolute;
+  width: 50%;
+}
 `
 
 export default function Account() {

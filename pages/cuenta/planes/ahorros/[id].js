@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import Header from 'components/Header'
 import Head from 'next/head'
 import CheckLi from 'components/CheckLi'
-import Popup from 'reactjs-popup'
-import Popup2 from 'reactjs-popup'
 import { useState } from 'react'
 import 'reactjs-popup/dist/index.css'
 import { PlanNomina, PlanAhorros } from 'components/PlanPopupSaving'
+import { updatePlan } from '../../../../firebase/client'
+import { useRouter } from 'next/router'
 
 const Button = styled.button`
-border: none;
+border: 1px solid #fff;
 padding: 10px 15px;
 background-color: #004481;
 color: #fff;
@@ -48,7 +48,23 @@ box-shadow:  -5px 5px 60px #bebebe44,
 @media (min-height: 844px) {
   margin-top: 190px;
 }
-& > div {
+.nomina {
+  margin: 0 10px;
+  width: 50%;
+  height: 70%;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  @media (max-width: 739px) {
+    margin: 10px 0;
+    width: 100%;
+  }
+  & > p {
+    font-size: .8em;
+    letter-spacing: 1.2px;
+  }
+}
+.ahorro {
   margin: 0 10px;
   width: 50%;
   height: 70%;
@@ -92,35 +108,11 @@ h2 {
   }
 }
 `
-const StyledPopup2 = styled(Popup2)`
-&-content {
-  width: 50%;
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  @media (max-width: 400px) {
-    width: 80%;
-  }
-}
-`
-const StyledPopup = styled(Popup)`
-&-content {
-  width: 50%;
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  @media (max-width: 400px) {
-    width: 80%;
-  }
-}
-`
 export default function SavingPlan() {
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
+  const [plan, setPlan] = useState(null)
+  const router = useRouter()
 
   const handlePopup = () => {
     setOpen(!open)
@@ -128,11 +120,42 @@ export default function SavingPlan() {
   const handlePopup2 = () => {
     setOpen2(!open2)
   }
+
+  const handleNomina = e => {
+    e.preventDefault()
+    updatePlan({ id: router.query.id, plan: 'nomina' })
+      .then(() => setPlan('Felicidades! Su cuenta de ahorros con el plan de nómina han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
+      .catch(err => console.log('err updating plan', err))
+  }
+  const handleAhorro = e => {
+    e.preventDefault()
+    updatePlan({ id: router.query.id, plan: 'ahorro' })
+      .then(() => console.log('updated'))
+      .catch(err => console.log('err updating plan', err))
+  }
+
+  const handleDone = e => {
+    e.preventDefault()
+    router.replace('/cuenta')
+  }
   return(
     <>
       <Head><title>Planes cuenta ahorros</title></Head>
       <Header />
       <Container>
+        {
+          plan && 
+            <>
+              <div style={{width: '100%', padding: '0 5px'}}>
+                <h2>{plan}</h2>
+                <br />
+                <Button onClick={handleDone}>Finalizar proceso</Button>
+              </div>
+            </>
+        }
+        {
+          plan === null &&
+            <>
         <div className='nomina'>
           <h2>Plan de nómina</h2>
           <p>Cuota de manejo sin importar tu saldo <span className='saldo'>$0</span></p>
@@ -143,7 +166,7 @@ export default function SavingPlan() {
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
-            <Button>Me interesa</Button>
+            <Button onClick={handleNomina}>Me interesa</Button>
             <Button onClick={handlePopup}>Ver beneficios</Button>
             <PlanNomina open={open} handlePopup={handlePopup} />
           </div>
@@ -158,11 +181,13 @@ export default function SavingPlan() {
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
-            <Button>Me interesa</Button>
+            <Button onClick={handleAhorro}>Me interesa</Button>
             <Button onClick={handlePopup2}>Ver beneficios</Button>
             <PlanAhorros open={open2} handlePopup={handlePopup2} />
           </div>
         </div>
+            </>
+        }
       </Container>
     </>
   )
