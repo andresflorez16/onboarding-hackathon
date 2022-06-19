@@ -4,7 +4,7 @@ import Head from 'next/head'
 import CheckLi from 'components/CheckLi'
 import { useState, useEffect } from 'react'
 import 'reactjs-popup/dist/index.css'
-import { PlanNomina, PlanAhorros } from 'components/PlanesPopup'
+import { PlanIntereses, PlanTradicional } from 'components/PlanesPopup'
 import { updatePlan } from '../../../../firebase/client'
 import { useRouter } from 'next/router'
 import useUser from 'hooks/useUser'
@@ -49,7 +49,7 @@ box-shadow:  -5px 5px 60px #bebebe44,
 @media (min-height: 844px) {
   margin-top: 190px;
 }
-.nomina {
+.tradicional {
   margin: 0 10px;
   width: 50%;
   height: 70%;
@@ -65,7 +65,7 @@ box-shadow:  -5px 5px 60px #bebebe44,
     letter-spacing: 1.2px;
   }
 }
-.ahorro {
+.intereses {
   margin: 0 10px;
   width: 50%;
   height: 70%;
@@ -137,13 +137,13 @@ export default function SavingPlan() {
 
   const handleNomina = e => {
     e.preventDefault()
-    updatePlan({ id: router.query.id, plan: 'nomina' }, 'savingAccounts')
+    updatePlan({ id: router.query.id, plan: 'nomina' })
       .then(() => setPlan('Felicidades! Su cuenta de ahorros con el plan de nómina han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
       .catch(err => console.log('err updating plan', err))
   }
   const handleAhorro = e => {
     e.preventDefault()
-    updatePlan({ id: router.query.id, plan: 'ahorro' }, 'savingAccounts')
+    updatePlan({ id: router.query.id, plan: 'ahorro' })
       .then(() => setPlan('Felicidades! Su cuenta de ahorros con el plan de ahorro han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
       .catch(err => console.log('err updating plan', err))
   }
@@ -154,7 +154,7 @@ export default function SavingPlan() {
   }
   return(
     <>
-      <Head><title>Planes cuenta ahorros</title></Head>
+      <Head><title>Planes cuenta corriente</title></Head>
       <Header />
       <Container>
         {
@@ -169,34 +169,36 @@ export default function SavingPlan() {
         {
           plan === null &&
             <>
-        <div className='nomina'>
-          <h2>Plan de nómina</h2>
-          <p>Cuota de manejo sin importar tu saldo <span className='saldo'>$0</span></p>
+        <div className='tradicional'>
+          <h2>Plan cuenta corriente tradicional</h2>
+          <p>Además de permitir realizar consignaciones y retiros a través de cheques y tarjeta debito, tienes la opción de obtener cupo de sobregiro</p>
           <ul className='ul'>
-            <CheckLi>Podrías tener adelanto de nómina sin trámites ni papeleos.</CheckLi>
-            <CheckLi>Pagos de servicios y productos.</CheckLi>
-            <CheckLi>No es necesario que tu empresa tenga convenio con BBVA.</CheckLi>
+            <CheckLi>Solicita tu chequera ahora.</CheckLi>
+            <CheckLi>Maneja tu dinero con cheques o tarjeta débito..</CheckLi>
+            <CheckLi>Dispón de tu Tarjeta Débito BBVA y aprovecha todos sus servicios.</CheckLi>
+            <CheckLi>Tasas de interés diferenciales en función de tu saldo.</CheckLi>
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
             <Button onClick={handleNomina}>Me interesa</Button>
             <Button onClick={handlePopup}>Ver beneficios</Button>
-            <PlanNomina open={open} handlePopup={handlePopup} />
+            <PlanTradicional open={open} handlePopup={handlePopup} />
           </div>
         </div>
-        <div className='ahorro'>
-          <h2>Plan de ahorro</h2>
-          <p>Cuota de manejo con saldo medio a <strong>$1 millón</strong> en el mes anterior <span className='saldo'>$0</span></p>
+        <div className='intereses'>
+          <h2>Plan cuenta corriente con intereses</h2>
+          <p>Además de tener cupo de sobregiro, te ofrece una rentabilidad mensual sobre tus ahorros</p>
           <ul className='ul'>
-            <CheckLi>Disponibilidad inmediata del dinero ahorrado.</CheckLi>
-            <CheckLi>A mayor saldo recibes mayor tasa de interés.</CheckLi>
-            <CheckLi>Cuenta con el seguro de depósitos Fogafín.</CheckLi>
+            <CheckLi>Obtén intereses desde <strong>$1.000.000</strong>.</CheckLi>
+            <CheckLi>Ábrela con un monto desde <strong>$200.000</strong>.</CheckLi>
+            <CheckLi>Tasas de interés diferenciales en función de tu saldo.</CheckLi>
+            <CheckLi>Maneja tu dinero con cheques o tarjeta débito.</CheckLi>
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
             <Button onClick={handleAhorro}>Me interesa</Button>
             <Button onClick={handlePopup2}>Ver beneficios</Button>
-            <PlanAhorros open={open2} handlePopup={handlePopup2} />
+            <PlanIntereses open={open2} handlePopup={handlePopup2} />
           </div>
         </div>
             </>

@@ -5,7 +5,7 @@ font-family: inherit;
 background: #004481;
 color: white;
 padding: 1.35em 0;
-font-size: 17px;
+font-size: 1em;
 border: none;
 border-radius: 0.7em;
 letter-spacing: 0.08em;

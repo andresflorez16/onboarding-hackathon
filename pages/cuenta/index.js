@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import useUser, { USER_STATES } from 'hooks/useUser'
 import Spinner from 'components/Spinner'
 import Accounts from 'components/Accounts'
+import MyAccounts from 'components/MyAccounts'
 import { useEffect } from 'react'
 import Header from 'components/Header'
 import Head from 'next/head'
@@ -41,10 +42,7 @@ p {
   font-size: .9em;
  }
 }
-.myAccounts {
-  position: absolute;
-  width: 50%;
-}
+
 `
 
 export default function Account() {
@@ -73,6 +71,7 @@ export default function Account() {
               <p>Aquí podrás digilenciar los pasos para adquirir una <strong>cuenta de ahorros</strong> o <strong>corriente</strong>, de forma digital!</p>
               <p><strong>Elige el tipo de cuenta que necesitas:</strong></p>
               <Accounts />
+              <MyAccounts />
             </Container>
           </>
       }

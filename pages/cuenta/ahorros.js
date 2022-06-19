@@ -139,12 +139,10 @@ export default function Savings() {
   const [file, setFile] = useState(null)
   const [signature, setSignature] = useState(null)
   const [loading, setLoading] = useState(null)
+
   const router = useRouter()
-
   const user = useUser()
-
   const fileRef = useRef({})
-
   const canvasRef = useRef({})
 
   const clean = () => canvasRef.current.clear()

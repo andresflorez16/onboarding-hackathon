@@ -49,8 +49,17 @@ export const getSavingAccountData = uid => {
   return getDocs(getAccount)
 }
 
-export const updatePlan = (data) => {
-  const ref = doc(db, 'savingAccounts', data.id)
+export const createCheckAccount = data => {
+  return addDoc(collection(db, 'checkAccounts'), data)
+}
+
+export const getCheckAccountData = uid => {
+  const getAccount = query(collection(db, 'checkAccounts'), where('uid', '==', uid))
+  return getDocs(getAccount)
+}
+
+export const updatePlan = (data, dbRef) => {
+  const ref = doc(db, dbRef, data.id)
   return updateDoc(ref, { plan: data.plan })
 }
 

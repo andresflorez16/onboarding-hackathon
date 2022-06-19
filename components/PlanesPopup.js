@@ -50,3 +50,37 @@ export const PlanAhorros = ({ open, handlePopup }) => {
     </StyledPopup>
   )
 }
+
+export const PlanTradicional = ({ open, handlePopup }) => {
+  return(
+    <StyledPopup open={open} onClose={handlePopup}>
+      <div>
+        <h2>Beneficios del plan de cuenta corriente tradicional</h2>
+        <h3>Conoce las ventajas que ofrece la Cuenta Corriente Tradicional BBVA</h3>
+        <ul>
+          <CheckLi>Maneja tu dinero por medio de cheques, tu tarjeta débito y canales digitales</CheckLi>
+          <CheckLi>Retira en ATM con token a través de BBVA móvil sin costo</CheckLi>
+          <CheckLi>Consulta saldo, pagos y transferencias sin ningún costo a través de BBVA Net y BBVA Móvil</CheckLi>
+          <CheckLi>Usa tu sobregiro y tendrás hasta 7 días de gracia según tu saldo promedio</CheckLi>
+        </ul>
+      </div>
+    </StyledPopup>
+  )
+}
+
+export const PlanIntereses = ({ open, handlePopup }) => {
+  return(
+    <StyledPopup open={open} onClose={handlePopup}>
+      <div>
+        <h2>Beneficios del plan de cuenta corriente con intereses</h2>
+        <h3>Administra tu dinero de manera eficiente, mediante el giro de cheques, uso de tu tarjeta débito y canales digitales</h3>
+        <ul>
+          <CheckLi>Realiza consultas y transacciones con tu cuenta a través de BBVA móvil y BBVA net</CheckLi>
+          <CheckLi>Accede a cupo de sobregiro según tu capacidad de endeudamiento</CheckLi>
+          <CheckLi>Retira en cajeros automáticos con token a través de BBVA móvil sin costo</CheckLi>
+          <CheckLi>Recibe intereses mensuales de acuerdo con tu saldo promedio</CheckLi>
+        </ul>
+      </div>
+    </StyledPopup>
+  )
+}

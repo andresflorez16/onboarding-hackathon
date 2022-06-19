@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 const Select = styled.select`
-padding: 5px 10px;
+padding: 2px 10px;
 border: 1px solid #222;
 border-radius: 10px;
 font-family: Helvetica;
-font-size: 1em;
+font-size: .9em;
 color: #004481;
 cursor: pointer;
 background-color: #fff;
