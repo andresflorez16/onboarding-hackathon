@@ -128,6 +128,10 @@ form {
     color: red;
     margin-bottom: 2px;
     font-weight: 600;
+    @media (max-width: 415px) {
+      position: relative;
+      bottom: 0;
+    } 
   }
 }
 `

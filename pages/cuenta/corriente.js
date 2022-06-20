@@ -45,6 +45,12 @@ margin-top: 70px;
   @media (max-height: 812px) {
     margin-top: 150px;
   }
+  @media (max-height: 851px) {
+    margin-top: 160px;
+  }
+  @media (max-height: 900px) {
+    margin-top: 170px;
+  }
 }
 h2 {
   color: #fff;
@@ -119,11 +125,18 @@ form {
   .msg {
     position: absolute;
     bottom: 70px;
+    right: 50%;
     display: block;
     text-align: center;
     color: red;
     margin-bottom: 2px;
     font-weight: 600;
+    @media (max-width: 712px) {
+      position: relative;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+    }
   }
 }
 `
