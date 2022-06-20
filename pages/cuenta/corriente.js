@@ -8,8 +8,8 @@ import DropdownCity from 'components/DropdownCity'
 import Signature from 'components/Signature'
 import Spinner from 'components/Spinner'
 import Head from 'next/head'
-import { useState, useRef } from 'react'
-import useUser from 'hooks/useUser'
+import { useState, useRef, useEffect } from 'react'
+import useUser, { USER_STATES } from 'hooks/useUser'
 import { createCheckAccount, getCheckAccountData } from '../../firebase/client'
 import { useRouter } from 'next/router'
 
@@ -156,6 +156,10 @@ export default function Corriente() {
   const user = useUser()
   const router = useRouter()
 
+  useEffect(() => {
+    user
+  }, [user])
+
   const clean = () => canvasRef.current.clear()
 
   const save = () => setSignature(canvasRef.current.getTrimmedCanvas().toDataURL("image/png"))
@@ -243,10 +247,13 @@ export default function Corriente() {
       <Header />
       <Container>
         {
+          user ===  USER_STATES.NOT_KNOWN && <Spinner />
+        }
+        {
           loading && <Spinner />
         }
         {
-          loading === null &&
+          loading === null && user &&
             <>
             <h2>Crea tu cuenta corriente</h2>
             <form onSubmit={handleSubmit}>

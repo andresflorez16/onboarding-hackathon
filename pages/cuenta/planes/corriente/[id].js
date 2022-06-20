@@ -3,11 +3,12 @@ import Header from 'components/Header'
 import Head from 'next/head'
 import CheckLi from 'components/CheckLi'
 import { useState, useEffect } from 'react'
+import Spinner from 'components/Spinner'
 import 'reactjs-popup/dist/index.css'
 import { PlanIntereses, PlanTradicional } from 'components/PlanesPopup'
 import { updatePlan } from '../../../../firebase/client'
 import { useRouter } from 'next/router'
-import useUser from 'hooks/useUser'
+import useUser, { USER_STATES } from 'hooks/useUser'
 
 const Button = styled.button`
 border: 1px solid #fff;
@@ -128,6 +129,12 @@ export default function CheckPlan() {
   const [plan, setPlan] = useState(null)
   const router = useRouter()
 
+  const user = useUser()
+
+  useEffect(() => {
+    user === USER_STATES.NOT_LOGGED && router.push('/')
+  }, [user])
+
   const handlePopup = () => {
     setOpen(!open)
   }
@@ -158,7 +165,10 @@ export default function CheckPlan() {
       <Header />
       <Container>
         {
-          plan && 
+          user === USER_STATES.NOT_KNOWN && <Spinner />
+        }
+        {
+          plan && user &&
             <>
               <div className='processDone'>
                 <h2>{plan}</h2>
@@ -167,7 +177,7 @@ export default function CheckPlan() {
             </>
         }
         {
-          plan === null &&
+          plan === null && user &&
             <>
         <div className='tradicional'>
           <h2>Plan cuenta corriente tradicional</h2>

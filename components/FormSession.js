@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 const ContainerDiv = styled.div`
 width: 70%;
-height: 80%;
+height: 90%;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -49,6 +49,8 @@ form {
   display: block;
   color: red;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 `
