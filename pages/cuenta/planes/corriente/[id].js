@@ -122,7 +122,7 @@ h2 {
   }
 }
 `
-export default function SavingPlan() {
+export default function CheckPlan() {
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [plan, setPlan] = useState(null)
@@ -135,16 +135,16 @@ export default function SavingPlan() {
     setOpen2(!open2)
   }
 
-  const handleNomina = e => {
+  const handleTradicional = e => {
     e.preventDefault()
-    updatePlan({ id: router.query.id, plan: 'nomina' })
-      .then(() => setPlan('Felicidades! Su cuenta de ahorros con el plan de nómina han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
+    updatePlan({ id: router.query.id, plan: 'tradicional' }, 'checkAccounts')
+      .then(() => setPlan('Felicidades! Su cuenta corriente con el plan de tradicional han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
       .catch(err => console.log('err updating plan', err))
   }
-  const handleAhorro = e => {
+  const handleIntereses = e => {
     e.preventDefault()
-    updatePlan({ id: router.query.id, plan: 'ahorro' })
-      .then(() => setPlan('Felicidades! Su cuenta de ahorros con el plan de ahorro han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
+    updatePlan({ id: router.query.id, plan: 'intereses' }, 'checkAccounts')
+      .then(() => setPlan('Felicidades! Su cuenta corriente con intereses han sido creados correctamente, nuestro equipo se pondrá en contacto contigo!'))
       .catch(err => console.log('err updating plan', err))
   }
 
@@ -180,7 +180,7 @@ export default function SavingPlan() {
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
-            <Button onClick={handleNomina}>Me interesa</Button>
+            <Button onClick={handleTradicional}>Me interesa</Button>
             <Button onClick={handlePopup}>Ver beneficios</Button>
             <PlanTradicional open={open} handlePopup={handlePopup} />
           </div>
@@ -196,7 +196,7 @@ export default function SavingPlan() {
           </ul>
           <p>Si quieres saber más u obtener este plan:</p>
           <div className='buttons'>
-            <Button onClick={handleAhorro}>Me interesa</Button>
+            <Button onClick={handleIntereses}>Me interesa</Button>
             <Button onClick={handlePopup2}>Ver beneficios</Button>
             <PlanIntereses open={open2} handlePopup={handlePopup2} />
           </div>

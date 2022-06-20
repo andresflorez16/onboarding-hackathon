@@ -8,14 +8,12 @@ import Header from 'components/Header'
 import Head from 'next/head'
 
 const Container = styled.div`
-width: 50%;
-height: 75%;
+width: 60%;
 background-image: url('/saving1.jpg');
 background-size: 100% 100%;
-/*background: #D3CCE3;  [> fallback for old browsers <]*/
-/*b<]ackground: linear-gradient(to right, #E9E4F0, #D3CCE3); [> W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 padding: 10px;
 border-radius: 10px;
+margin-top: 70px;
 box-shadow:  -5px 5px 60px #bebebe44,
              5px -5px 60px #fff6;
 @media (max-width: 900px) {
@@ -30,10 +28,21 @@ box-shadow:  -5px 5px 60px #bebebe44,
 @media (max-height: 569px) {
   margin-top: 80px;
 }
+@media (max-width: 400px) {
+  margin-top: 130px;
+}
 h2 {
   color: #fff;
   @media (max-height: 569px) {
     font-size: 1.1em;
+  }
+}
+.info {
+  width: 100%;
+  background-color: #004481;
+  padding: 10px;
+  @media (max-height: 569px) {
+    font-size: .9em;
   }
 }
 p {
@@ -68,10 +77,10 @@ export default function Account() {
             <Header />
             <Container>
               <h2>Bienvenido {user.displayName}</h2>
-              <p>Aquí podrás digilenciar los pasos para adquirir una <strong>cuenta de ahorros</strong> o <strong>corriente</strong>, de forma digital!</p>
-              <p><strong>Elige el tipo de cuenta que necesitas:</strong></p>
-              <Accounts />
               <MyAccounts />
+              <p className='info'>Aquí podrás digilenciar los pasos para adquirir una <strong>cuenta de ahorros</strong> o <strong>corriente</strong>, de forma digital!</p>
+              <p className='info'><strong>Elige el tipo de cuenta que necesitas:</strong></p>
+              <Accounts />
             </Container>
           </>
       }

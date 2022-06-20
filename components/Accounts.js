@@ -87,7 +87,7 @@ align-items: center;
 
 /* Hover states */
 .card:hover .card-description {
- transform: translateY(50%);
+ transform: translateY(30%);
  @media (max-width: 650px) {
   transform: translateY(40%);
  }
